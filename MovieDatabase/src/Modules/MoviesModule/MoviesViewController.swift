@@ -30,6 +30,11 @@ final class MoviesViewController: UICollectionViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    presenter.fetchMovies {
+      DispatchQueue.main.async {
+        self.collectionView.reloadData()
+      }
+    }
   }
   
   // MARK: - UICollectionViewDataSource
@@ -47,10 +52,10 @@ final class MoviesViewController: UICollectionViewController {
       for: indexPath
     ) as! MovieCell
     
-    let movie = presenter.movies[indexPath.row]
-    
-    cell.fetchImage(for: presenter.movies[indexPath.row])
-    cell.configure(for: movie)
+    if let movie = presenter.movies[safe: indexPath.row] {
+      cell.fetchImage(for: presenter.movies[indexPath.row])
+      cell.configure(for: movie)
+    }
     
     return cell
   }
@@ -59,6 +64,7 @@ final class MoviesViewController: UICollectionViewController {
   private func setupCollectionView() {
     collectionView.backgroundColor = .background
     
+    collectionView.contentInsetAdjustmentBehavior = .always
     collectionView.dataSource = self
     collectionView.delegate = self
     collectionView.register(
@@ -93,16 +99,38 @@ final class MoviesViewController: UICollectionViewController {
     navigationItem.rightBarButtonItem = rightButton
   }
   
-  @objc func personButtonWasTapped(){
+  @objc private func personButtonWasTapped(){
     print("personButtonWasTapped")
   }
   
-  @objc func searchButtonWasTapped(){
+  @objc private func searchButtonWasTapped(){
     print("searchButtonWasTapped")
   }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension MoviesViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout:
+    UICollectionViewLayout,
+    insetForSectionAt section: Int
+  ) -> UIEdgeInsets { .zero }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout:
+    UICollectionViewLayout,
+    minimumLineSpacingForSectionAt section: Int
+  ) -> CGFloat { .zero }
+  
+  func collectionView(
+    _ collectionView:
+    UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumInteritemSpacingForSectionAt section: Int
+  ) -> CGFloat { .zero }
+  
   func collectionView(
     _ collectionView: UICollectionView,
     layout collectionViewLayout: UICollectionViewLayout,
@@ -110,6 +138,14 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout {
   ) -> CGSize {
     let width = collectionView.frame.size.width / 2
     return CGSize(width: width, height: width * 1.5)
+  }
+  
+  override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
+    collectionView?.collectionViewLayout.invalidateLayout()
+    super.viewWillTransition(to: size, with: coordinator)
   }
 }
 

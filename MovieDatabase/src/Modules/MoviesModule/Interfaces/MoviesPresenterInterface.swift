@@ -7,4 +7,6 @@
 
 protocol MoviesPresenterInterface: AnyObject {
   var movies: [Movie] { get }
+  
+  func fetchMovies(completionBlock: @escaping CompletionBlock)
 }

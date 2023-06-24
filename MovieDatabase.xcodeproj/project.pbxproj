@@ -40,6 +40,10 @@
 		70AC614B2A47451400467F2C /* MoviesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC614A2A47451400467F2C /* MoviesPresenter.swift */; };
 		70AC614E2A47469000467F2C /* MoviesViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC614D2A47469000467F2C /* MoviesViewInterface.swift */; };
 		70AC61502A47471300467F2C /* MoviesPresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC614F2A47471300467F2C /* MoviesPresenterInterface.swift */; };
+		70AC61522A47578700467F2C /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC61512A47578700467F2C /* Collection+Extension.swift */; };
+		70AC61572A47592500467F2C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC61562A47592500467F2C /* Constants.swift */; };
+		70AC61592A47678000467F2C /* MovieRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC61582A47678000467F2C /* MovieRepresentable.swift */; };
+		70AC615C2A476AE400467F2C /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC615B2A476AE400467F2C /* DateFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +101,10 @@
 		70AC614A2A47451400467F2C /* MoviesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesPresenter.swift; sourceTree = "<group>"; };
 		70AC614D2A47469000467F2C /* MoviesViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewInterface.swift; sourceTree = "<group>"; };
 		70AC614F2A47471300467F2C /* MoviesPresenterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesPresenterInterface.swift; sourceTree = "<group>"; };
+		70AC61512A47578700467F2C /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
+		70AC61562A47592500467F2C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		70AC61582A47678000467F2C /* MovieRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepresentable.swift; sourceTree = "<group>"; };
+		70AC615B2A476AE400467F2C /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +190,7 @@
 				70AC61282A470F3300467F2C /* Models */,
 				70AC61222A470EC500467F2C /* Network */,
 				70AC61192A462F0500467F2C /* Extensions */,
+				70AC61552A47591600467F2C /* Helpers */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -296,6 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				70AC611A2A462F1900467F2C /* CGFloat+Extension.swift */,
+				70AC61512A47578700467F2C /* Collection+Extension.swift */,
+				70AC615B2A476AE400467F2C /* DateFormatter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -322,7 +333,7 @@
 		70AC61282A470F3300467F2C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				70AC61292A470F3F00467F2C /* Movie.swift */,
+				70AC615A2A4769ED00467F2C /* Movie */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -330,8 +341,8 @@
 		70AC61332A47138800467F2C /* TMDBRepository */ = {
 			isa = PBXGroup;
 			children = (
-				70AC61312A47136200467F2C /* TMDBRepositoryEndPoint.swift */,
 				70AC61232A470ED300467F2C /* TMDBService.swift */,
+				70AC61312A47136200467F2C /* TMDBRepositoryEndPoint.swift */,
 			);
 			path = TMDBRepository;
 			sourceTree = "<group>";
@@ -348,8 +359,8 @@
 		70AC61402A4715AC00467F2C /* NetworkCoreModels */ = {
 			isa = PBXGroup;
 			children = (
-				70AC612F2A47134D00467F2C /* NetworkError.swift */,
 				70AC61372A4714FF00467F2C /* Endpoint.swift */,
+				70AC612F2A47134D00467F2C /* NetworkError.swift */,
 			);
 			path = NetworkCoreModels;
 			sourceTree = "<group>";
@@ -389,6 +400,23 @@
 				70AC614F2A47471300467F2C /* MoviesPresenterInterface.swift */,
 			);
 			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		70AC61552A47591600467F2C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				70AC61562A47592500467F2C /* Constants.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		70AC615A2A4769ED00467F2C /* Movie */ = {
+			isa = PBXGroup;
+			children = (
+				70AC61582A47678000467F2C /* MovieRepresentable.swift */,
+				70AC61292A470F3F00467F2C /* Movie.swift */,
+			);
+			path = Movie;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -528,6 +556,7 @@
 				70AC614E2A47469000467F2C /* MoviesViewInterface.swift in Sources */,
 				70AC5FF92A45C99A00467F2C /* DetailViewController.swift in Sources */,
 				70AC61322A47136200467F2C /* TMDBRepositoryEndPoint.swift in Sources */,
+				70AC61572A47592500467F2C /* Constants.swift in Sources */,
 				70AC611B2A462F1900467F2C /* CGFloat+Extension.swift in Sources */,
 				70AC611E2A46383E00467F2C /* PresentationDirection.swift in Sources */,
 				70AC61142A462DC900467F2C /* SlideInPresentationAnimator.swift in Sources */,
@@ -546,8 +575,11 @@
 				70AC5FF72A45C99A00467F2C /* SceneDelegate.swift in Sources */,
 				70AC61242A470ED300467F2C /* TMDBService.swift in Sources */,
 				70AC5FFF2A45C99B00467F2C /* MovieDatabase.xcdatamodeld in Sources */,
+				70AC615C2A476AE400467F2C /* DateFormatter.swift in Sources */,
 				70AC61182A462EBC00467F2C /* SlideInPresentationController.swift in Sources */,
 				70AC612A2A470F3F00467F2C /* Movie.swift in Sources */,
+				70AC61522A47578700467F2C /* Collection+Extension.swift in Sources */,
+				70AC61592A47678000467F2C /* MovieRepresentable.swift in Sources */,
 				70AC61382A4714FF00467F2C /* Endpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

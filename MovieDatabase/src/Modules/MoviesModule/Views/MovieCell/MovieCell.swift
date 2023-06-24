@@ -7,6 +7,8 @@
 
 import UIKit
 
+let imageCache = NSCache<AnyObject, AnyObject>()
+
 class MovieCell: UICollectionViewCell {
   
   // MARK: - Private (Properties)
@@ -59,26 +61,27 @@ class MovieCell: UICollectionViewCell {
   func fetchImage(
     for movie: Movie
   ) {
-//    cell.posterImage.image = nil
-//
-//    if let imageFromCache = imageCache.object(forKey: movie.images!.posterPath as AnyObject) as? UIImage {
-//      cell.posterImage.image = imageFromCache
-//      cell.activityIndicator.stopAnimating()
-//    } else {
-//      ImageRepository.shared.fetchImage(imagePath: movie.images!.posterPath, successHandler: { (response) in
-//        DispatchQueue.main.async {
-//
-//          if movie.title == cell.titleLabel.text {
-//            cell.posterImage.image = response
-//            cell.activityIndicator.stopAnimating()
-//          }
-//        }
-//
-//        imageCache.setObject(response, forKey: movie.images!.posterPath as AnyObject)
-//      }, errorHandler: {
-//        (error) in
-//      })
-//    }
+    imageView.image = nil
+
+    if
+      let imageFromCache = imageCache.object(forKey: movie.posterPath as AnyObject) as? UIImage
+    {
+      imageView.image = imageFromCache
+      activityIndicator.stopAnimating()
+    } else {
+      TMDBService.shared.fetchImage(path: movie.posterPath) { response in
+        DispatchQueue.main.async {
+          if movie.title == self.infoView.title {
+            self.imageView.image = response
+            self.activityIndicator.stopAnimating()
+          }
+        }
+
+        imageCache.setObject(response, forKey: movie.posterPath as AnyObject)
+      } errorHandler: { error in
+        
+      }
+    }
   }
   
   func configure(for movie: Movie) {

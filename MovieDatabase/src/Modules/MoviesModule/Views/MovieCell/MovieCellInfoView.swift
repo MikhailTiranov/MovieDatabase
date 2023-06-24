@@ -35,6 +35,7 @@ class MovieCellInfoView: UIView {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: 16.0)
+    label.numberOfLines = 2
     label.textColor = .white
     return label
   }()
@@ -85,22 +86,11 @@ class MovieCellInfoView: UIView {
   }
   
   // MARK: - Public (Interface)
-  func configure(for movie: Movie) {
+  func configure(for movie: MovieCellRepresentable) {
     titleLabel.text = movie.title
-    genreAndYearLabel.text = "\(movie.genre) · \(movie.year)"
-    timeLabel.text = makeTime(runtime: movie.runtime)
-    
-    let textString = "★ \(movie.imdbRating)"
-    let range = (textString as NSString).range(of: "★")
-    let attributedString = NSMutableAttributedString(string: textString)
-    
-    attributedString.addAttribute(
-      .foregroundColor,
-      value: UIColor.accent,
-      range: range
-    )
-    
-    reviewLabel.attributedText = attributedString
+    genreAndYearLabel.text = movie.genreAndYear
+    timeLabel.text = movie.duration
+    reviewLabel.attributedText = movie.attributedReview
   }
   
   // MARK: - Private (Interface)
@@ -134,8 +124,7 @@ class MovieCellInfoView: UIView {
           constant: -8.0
         ),
         titleLabel.bottomAnchor.constraint(
-          equalTo: genreAndYearLabel.topAnchor,
-          constant: -8.0
+          equalTo: genreAndYearLabel.topAnchor
         ),
         
         genreAndYearLabel.leadingAnchor.constraint(
@@ -166,13 +155,5 @@ class MovieCellInfoView: UIView {
         )
       ]
     )
-  }
-  
-  func makeTime(runtime: String) -> String {
-    let numbers = Int(runtime) ?? 0
-    let hours = String(numbers / 60)
-    let minutes = String(numbers % 60)
-    let correctTime = "\(hours)h\(minutes)min"
-    return correctTime
   }
 }

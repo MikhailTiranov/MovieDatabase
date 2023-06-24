@@ -23,16 +23,16 @@ extension TMDBEndpoint: Endpointable {
     case .image:
       return "image.tmdb.org"
     default:
-      return "api.themoviedb.org/3"
+      return "api.themoviedb.org"
     }
   }
   
   var path: String {
     switch self {
     case .search:
-      return "/search/movie/"
+      return "/3/search/movie/"
     case .fetch(let id):
-      return "/movie/\(id)"
+      return "/3/movie/\(id)"
     case .image(let path):
       return "/t/p/w500/\(path)"
     }
@@ -59,8 +59,8 @@ extension TMDBEndpoint: Endpointable {
     
   func makeRequest() -> URLRequest? {
     var components = URLComponents()
-    components.scheme = scheme
     components.host = host
+    components.scheme = scheme
     components.path = path
     components.queryItems = queryItems.isEmpty ? nil : queryItems
     
