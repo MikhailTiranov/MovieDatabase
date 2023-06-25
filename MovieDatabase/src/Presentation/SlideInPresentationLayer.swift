@@ -1,5 +1,5 @@
 //
-//  SlideInPresentationManager.swift
+//  SlideInPresentationLayer.swift
 //  MovieDatabase
 //
 //  Created by Mihail Tiranov on 23.06.2023.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SlideInPresentationManager: NSObject {
+class SlideInPresentationLayer: NSObject {
   var direction = PresentationDirection.left
 }
 
-extension SlideInPresentationManager: UIViewControllerTransitioningDelegate {
+extension SlideInPresentationLayer: UIViewControllerTransitioningDelegate {
   func presentationController(
     forPresented presented: UIViewController,
     presenting: UIViewController?,

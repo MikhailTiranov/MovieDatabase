@@ -11,6 +11,7 @@ final class MoviesViewController: UICollectionViewController {
   
   // MARK: - Private (Properties)
   private lazy var presenter: MoviesPresenterInterface = MoviesPresenter(with: self)
+  private lazy var slideInTransitioningDelegate = SlideInPresentationLayer()
   
   // MARK: - Init
   init() {
@@ -53,7 +54,6 @@ final class MoviesViewController: UICollectionViewController {
     ) as! MovieCell
     
     if let movie = presenter.movies[safe: indexPath.row] {
-      cell.fetchImage(for: presenter.movies[indexPath.row])
       cell.configure(for: movie)
     }
     
@@ -64,6 +64,8 @@ final class MoviesViewController: UICollectionViewController {
   private func setupCollectionView() {
     collectionView.backgroundColor = .background
     
+    collectionView.showsHorizontalScrollIndicator = false
+    collectionView.showsVerticalScrollIndicator = false
     collectionView.contentInsetAdjustmentBehavior = .always
     collectionView.dataSource = self
     collectionView.delegate = self
@@ -99,12 +101,24 @@ final class MoviesViewController: UICollectionViewController {
     navigationItem.rightBarButtonItem = rightButton
   }
   
-  @objc private func personButtonWasTapped(){
-    print("personButtonWasTapped")
+  @objc private func personButtonWasTapped() {
+    let viewController = ProfileViewController()
+    show(viewController: viewController, from: .left)
   }
   
-  @objc private func searchButtonWasTapped(){
-    print("searchButtonWasTapped")
+  @objc private func searchButtonWasTapped() {
+    let viewController = SearchViewContoller()
+    show(viewController: viewController, from: .right)
+  }
+  
+  private func show(
+    viewController: UIViewController,
+    from direction: PresentationDirection
+  ) {
+    slideInTransitioningDelegate.direction = direction
+    viewController.transitioningDelegate = slideInTransitioningDelegate
+    viewController.modalPresentationStyle = .custom
+    present(viewController, animated: true)
   }
 }
 

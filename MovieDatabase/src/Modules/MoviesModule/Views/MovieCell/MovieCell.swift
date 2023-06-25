@@ -7,8 +7,6 @@
 
 import UIKit
 
-let imageCache = NSCache<AnyObject, AnyObject>()
-
 class MovieCell: UICollectionViewCell {
   
   // MARK: - Private (Properties)
@@ -21,15 +19,21 @@ class MovieCell: UICollectionViewCell {
   
   private lazy var activityIndicator = {
     let view = UIActivityIndicatorView()
+    view.hidesWhenStopped = true
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
   
   private lazy var imageView: UIImageView = {
     let view = UIImageView()
+    view.tintColor = .accent
+    view.backgroundColor = .imageDisabled
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+  
+  // TODO: Make cache outside
+  private static let imageCache = NSCache<AnyObject, AnyObject>()
   
   // MARK: - UICollectionViewCell
   override func prepareForReuse() {
@@ -58,48 +62,37 @@ class MovieCell: UICollectionViewCell {
   }
   
   // MARK: - Public (Interface)
-  func fetchImage(
-    for movie: Movie
+  func configure(for movie: Movie) {
+    infoView.configure(for: movie)
+    fetchImage(for: movie.posterPath)
+  }
+  
+  // MARK: - Private (Interface)
+  private func fetchImage(
+    for path: String
   ) {
     imageView.image = nil
+    activityIndicator.startAnimating()
 
+    // TODO: start to load only after appearing on screen
     if
-      let imageFromCache = imageCache.object(forKey: movie.posterPath as AnyObject) as? UIImage
+      let imageFromCache = Self.imageCache.object(forKey: path as AnyObject) as? UIImage
     {
       imageView.image = imageFromCache
       activityIndicator.stopAnimating()
     } else {
-      TMDBService.shared.fetchImage(path: movie.posterPath) { response in
+      TMDBService.shared.fetchImage(path: path) { image in
         DispatchQueue.main.async {
-          if movie.title == self.infoView.title {
-            self.imageView.image = response
-            self.activityIndicator.stopAnimating()
-          }
+          self.activityIndicator.stopAnimating()
+          self.setupImage(image)
         }
-
-        imageCache.setObject(response, forKey: movie.posterPath as AnyObject)
+        Self.imageCache.setObject(image, forKey: path as AnyObject)
       } errorHandler: { error in
-        
+        self.setupImage(nil)
       }
     }
   }
   
-  func configure(for movie: Movie) {
-    activityIndicator.startAnimating()
-    activityIndicator.hidesWhenStopped = true
-    
-    infoView.configure(for: movie)
-  }
-  
-  func makeRuntime(runtime: String) -> String {
-      let numbers = NSString(string: runtime).intValue
-      let hours = numbers / 60
-      let minutes = numbers % 60
-      let correctTime = String(hours) + "h " + String(minutes) + "min"
-      return correctTime
-  }
-  
-  // MARK: - Private (Interface)
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
     
@@ -111,6 +104,11 @@ class MovieCell: UICollectionViewCell {
     addSubview(imageView)
     imageView.addSubview(infoView)
     imageView.addSubview(activityIndicator)
+  }
+  
+  private func setupImage(_ image: UIImage?) {
+    imageView.contentMode = image == nil ? .scaleAspectFit : .scaleToFill
+    imageView.image = image ?? .imageError
   }
   
   private func setupLayout() {

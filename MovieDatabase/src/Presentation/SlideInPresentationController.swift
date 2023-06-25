@@ -52,8 +52,8 @@ class SlideInPresentationController: UIPresentationController {
   
   // MARK: - UIPresentationController
   override func presentationTransitionWillBegin() {
-    containerView?.sendSubviewToBack(dimmingView)
-    
+    containerView?.insertSubview(dimmingView, at: 0)
+
     NSLayoutConstraint.activate(
       NSLayoutConstraint.constraints(
         withVisualFormat: "V:|[dimmingView]|",

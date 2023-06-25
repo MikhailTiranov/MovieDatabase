@@ -1,19 +1,15 @@
 //
-//  ViewController.swift
+//  SearchViewContoller.swift
 //  MovieDatabase
 //
-//  Created by Mihail Tiranov on 23.06.2023.
+//  Created by Mihail Tiranov on 25.06.2023.
 //
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class SearchViewContoller: UITableViewController {
   
   // MARK: - ViewController
-  override func loadView() {
-    view = DetailView()
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
   }

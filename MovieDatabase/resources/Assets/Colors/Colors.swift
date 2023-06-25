@@ -28,4 +28,20 @@ extension UIColor {
   static var dimming: UIColor {
     UIColor(named: "dimming")!
   }
+  
+  static var imageDisabled: UIColor {
+    UIColor(named: "imageDisabled")!
+  }
+  
+  static var backgroundAccent: UIColor {
+    UIColor(named: "backgroundAccent")!
+  }
+  
+  static var textHighligted: UIColor {
+    UIColor(named: "textHighligted")!
+  }
+  
+  static var accentSecondary: UIColor {
+    UIColor(named: "accentSecondary")!
+  }
 }
