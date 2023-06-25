@@ -10,13 +10,28 @@ import MessageUI
 
 final class ProfileViewController: UIViewController {
   
+  // MARK: - Private (Properties)
+  private let closeButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: closeButtonHeight).isActive = true
+    button.widthAnchor.constraint(equalToConstant: closeButtonHeight).isActive = true
+    button.tintColor = .textHighligted
+    button.layer.cornerRadius = closeButtonHeight / 2
+    button.backgroundColor = .backgroundAccent
+    button.setImage(.xmark, for: .normal)
+    return button
+  }()
+  
   // MARK: - ViewController
   override func viewDidLoad() {
     super.viewDidLoad()
     setupView()
     setupLayout()
+    setupCloseButton()
   }
   
+  // MARK: - Private (Interface)
   private func setupView() {
     view.backgroundColor = .background
   }
@@ -29,6 +44,28 @@ final class ProfileViewController: UIViewController {
     view.addSubview(profileView)
     view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
     view.centerYAnchor.constraint(equalTo: profileView.centerYAnchor).isActive = true
+  }
+  
+  private func setupCloseButton() {
+    view.addSubview(closeButton)
+    view.safeAreaLayoutGuide.topAnchor.constraint(
+      equalTo: closeButton.topAnchor,
+      constant: -8.0
+    ).isActive = true
+    view.trailingAnchor.constraint(
+      equalTo: closeButton.trailingAnchor,
+      constant: 8.0
+    ).isActive = true
+    
+    closeButton.addTarget(
+      self,
+      action: #selector(tapCloseButton),
+      for: .touchUpInside
+    )
+  }
+  
+  @objc private func tapCloseButton() {
+    dismiss(animated: true)
   }
 }
 
@@ -71,4 +108,8 @@ extension ProfileViewController: MFMailComposeViewControllerDelegate {
   ) {
     dismiss(animated: true)
   }
+}
+
+extension ProfileViewController {
+  private static let closeButtonHeight = 40.0
 }

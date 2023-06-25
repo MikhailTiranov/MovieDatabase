@@ -12,9 +12,15 @@ final class SearchViewContoller: UITableViewController {
   // MARK: - ViewController
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupView()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+  }
+  
+  // MARK: - Private (Interface)
+  private func setupView() {
+    view.backgroundColor = .background
   }
 }

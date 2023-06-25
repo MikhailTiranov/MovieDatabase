@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     return true
   }
+  
+  // TODO: REMOVE ALL EXTRA CALLS IN LOGS
 
   // MARK: UISceneSession Lifecycle
   func application(

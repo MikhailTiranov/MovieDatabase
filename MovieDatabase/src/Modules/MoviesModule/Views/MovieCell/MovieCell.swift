@@ -93,9 +93,7 @@ class MovieCell: UICollectionViewCell {
     }
   }
   
-  private func setupView() {
-    translatesAutoresizingMaskIntoConstraints = false
-    
+  private func setupView() {    
     setupSubviews()
     setupLayout()
   }
