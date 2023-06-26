@@ -13,4 +13,17 @@ extension DateFormatter {
     dateFormatter.dateFormat = "yyyy"
     return dateFormatter
   }()
+  
+  static let fullDateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "YYYY-MM-DD"
+    return dateFormatter
+  }()
+  
+  static let describingDateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en")
+    dateFormatter.dateFormat = "MMMM d, yyyy"
+    return dateFormatter
+  }()
 }

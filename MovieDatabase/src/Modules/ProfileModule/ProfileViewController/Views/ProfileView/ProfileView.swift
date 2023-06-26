@@ -27,7 +27,7 @@ class ProfileView: UIStackView {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Male | Born 16.11.1993"
     label.font = .systemFont(ofSize: 13.0, weight: .bold)
-    label.textColor = .accentSecondary
+    label.textColor = .primaryText
     return label
   }()
   
@@ -51,7 +51,7 @@ class ProfileView: UIStackView {
     label.text = Links.mobileNumber
     label.font = .systemFont(ofSize: 15.0, weight: .bold)
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = .accentSecondary
+    label.textColor = .primaryText
     return label
   }()
   
@@ -60,7 +60,7 @@ class ProfileView: UIStackView {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = Links.supportEmail
     label.font = .systemFont(ofSize: 15.0, weight: .bold)
-    label.textColor = .accentSecondary
+    label.textColor = .primaryText
     return label
   }()
   

@@ -30,7 +30,7 @@ extension TMDBEndpoint: Endpointable {
   var path: String {
     switch self {
     case .search:
-      return "/3/search/movie/"
+      return "/3/search/movie"
     case .fetch(let id):
       return "/3/movie/\(id)"
     case .image(let path):

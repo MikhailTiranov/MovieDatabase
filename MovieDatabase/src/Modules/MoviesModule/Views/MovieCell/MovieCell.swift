@@ -62,9 +62,12 @@ class MovieCell: UICollectionViewCell {
   }
   
   // MARK: - Public (Interface)
-  func configure(for movie: Movie) {
+  func configure(for movie: MovieCellRepresentable) {
     infoView.configure(for: movie)
-    fetchImage(for: movie.posterPath)
+    
+    if let posterPath = movie.posterPath {
+      fetchImage(for: posterPath)
+    }
   }
   
   // MARK: - Private (Interface)
@@ -82,10 +85,7 @@ class MovieCell: UICollectionViewCell {
       activityIndicator.stopAnimating()
     } else {
       TMDBService.shared.fetchImage(path: path) { image in
-        DispatchQueue.main.async {
-          self.activityIndicator.stopAnimating()
-          self.setupImage(image)
-        }
+        self.setupImage(image)
         Self.imageCache.setObject(image, forKey: path as AnyObject)
       } errorHandler: { error in
         self.setupImage(nil)
@@ -93,7 +93,7 @@ class MovieCell: UICollectionViewCell {
     }
   }
   
-  private func setupView() {    
+  private func setupView() {
     setupSubviews()
     setupLayout()
   }
@@ -105,8 +105,11 @@ class MovieCell: UICollectionViewCell {
   }
   
   private func setupImage(_ image: UIImage?) {
-    imageView.contentMode = image == nil ? .scaleAspectFit : .scaleToFill
-    imageView.image = image ?? .imageError
+    DispatchQueue.main.async {
+      self.activityIndicator.stopAnimating()
+      self.imageView.contentMode = image == nil ? .scaleAspectFit : .scaleToFill
+      self.imageView.image = image ?? .imageError
+    }
   }
   
   private func setupLayout() {
@@ -134,5 +137,5 @@ class MovieCell: UICollectionViewCell {
 
 extension MovieCell {
   private static let infoViewHeight = 95.0
-  static let reuseIdentifier = "MovieCell"
+  private static let reuseIdentifier = "MovieCell"
 }

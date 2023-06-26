@@ -9,6 +9,5 @@ import Foundation
 
 enum PresentationDirection: CGFloat {
   case left = 1
-  case center
   case right = -1
 }

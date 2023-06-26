@@ -1,5 +1,5 @@
 //
-//  DemoView.swift
+//  DetailViewForm.swift
 //  MovieDatabase
 //
 //  Created by Mihail Tiranov on 23.06.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailView: UIView {
+class DetailViewForm: UIView {
   
   // MARK: - Private (Properties)
   private var path: UIBezierPath!

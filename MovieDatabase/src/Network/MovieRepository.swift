@@ -15,7 +15,7 @@ protocol MovieRepository: AnyObject {
   )
   func searchMovie(
     with title: String,
-    successHandler: @escaping (_ response: [String]) -> (),
+    successHandler: @escaping (_ response: [Movie]) -> (),
     errorHandler: @escaping(_ error: NetworkError) -> ()
   )
   func fetchImage(

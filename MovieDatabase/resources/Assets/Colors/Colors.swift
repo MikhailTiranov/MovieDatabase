@@ -41,6 +41,14 @@ extension UIColor {
     UIColor(named: "textHighligted")!
   }
   
+  static var primaryText: UIColor {
+    UIColor(named: "primaryText")!
+  }
+  
+  static var dotBackground: UIColor {
+    UIColor(named: "dotBackground")!
+  }
+  
   static var accentSecondary: UIColor {
     UIColor(named: "accentSecondary")!
   }

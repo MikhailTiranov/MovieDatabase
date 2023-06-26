@@ -20,13 +20,7 @@ class TMDBService: NetworkRouter, MovieRepository {
   // MARK: - Private (Properties)
   private let jsonDecoder: JSONDecoder = {
     let jsonDecoder = JSONDecoder()
-    
     jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-    
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "YYYY-MM-DD"
-    jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
-    
     return jsonDecoder
   }()
   
@@ -47,12 +41,13 @@ class TMDBService: NetworkRouter, MovieRepository {
   
   func searchMovie(
     with title: String,
-    successHandler: @escaping (_ response: [String]) -> (),
+    successHandler: @escaping (_ response: [Movie]) -> (),
     errorHandler: @escaping(_ error: NetworkError) -> ()
   ) {
     sendRequest(with: TMDBEndpoint.search(title)) { data in
       do {
-        successHandler(try self.jsonDecoder.decode([String].self, from: data))
+        let searchResults = try self.jsonDecoder.decode(MovieSearchResults.self, from: data)
+        successHandler(searchResults.results)
       } catch {
         errorHandler(.serializationError)
       }

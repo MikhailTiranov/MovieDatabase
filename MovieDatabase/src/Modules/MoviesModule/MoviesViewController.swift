@@ -7,10 +7,16 @@
 
 import UIKit
 
-final class MoviesViewController: UICollectionViewController {
+final class MoviesViewController: UICollectionViewController, MoviesViewInterface {
+  
+  // MARK: - MoviesViewInterface
+  var presenter: MoviesPresenterInterface! {
+    willSet {
+      newValue?.viewInterface = self
+    }
+  }
   
   // MARK: - Private (Properties)
-  private lazy var presenter: MoviesPresenterInterface = MoviesPresenter(with: self)
   private lazy var slideInTransitioningDelegate = SlideInPresentationLayer()
   
   // MARK: - Init
@@ -60,6 +66,14 @@ final class MoviesViewController: UICollectionViewController {
     return cell
   }
   
+  override func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    guard let movie = presenter.movies[safe: indexPath.row] else { return }
+    showDetailViewController(with: movie)
+  }
+  
   // MARK: - Private (Interface)
   private func setupCollectionView() {
     collectionView.backgroundColor = .background
@@ -107,7 +121,7 @@ final class MoviesViewController: UICollectionViewController {
   }
   
   @objc private func searchButtonWasTapped() {
-    let viewController = SearchViewContoller()
+    let viewController = UINavigationController(rootViewController: SearchViewContoller()) 
     show(viewController: viewController, from: .right)
   }
   
@@ -118,6 +132,13 @@ final class MoviesViewController: UICollectionViewController {
     slideInTransitioningDelegate.direction = direction
     viewController.transitioningDelegate = slideInTransitioningDelegate
     viewController.modalPresentationStyle = .custom
+    present(viewController, animated: true)
+  }
+  
+  private func showDetailViewController(with movie: MovieDetailRepresentable) {
+    let presenter = DetailPresenter(with: movie)
+    let viewController = DetailViewController()
+    viewController.presenter = presenter
     present(viewController, animated: true)
   }
 }
@@ -162,5 +183,3 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout {
     super.viewWillTransition(to: size, with: coordinator)
   }
 }
-
-extension MoviesViewController: MoviesViewInterface { }

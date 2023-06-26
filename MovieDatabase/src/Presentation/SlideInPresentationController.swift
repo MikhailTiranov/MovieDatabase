@@ -24,9 +24,6 @@ class SlideInPresentationController: UIPresentationController {
     switch direction {
     case .right:
       frame.origin.x = containerView!.frame.width * 0.2
-    case .center:
-      frame.size.width = UIScreen.main.bounds.width * 0.91
-      frame.size.height = UIScreen.main.bounds.height * 0.94
     case .left:
       frame.origin = .zero
     }
@@ -91,13 +88,6 @@ class SlideInPresentationController: UIPresentationController {
   
   override func containerViewWillLayoutSubviews() {
     presentedView?.frame = frameOfPresentedViewInContainerView
-    
-    if direction == .center {
-      presentedView?.center = CGPoint(
-        x: UIScreen.main.bounds.width / 2,
-        y: UIScreen.main.bounds.height / 2
-      )
-    }
   }
   
   override func size(
@@ -105,7 +95,7 @@ class SlideInPresentationController: UIPresentationController {
     withParentContainerSize parentSize: CGSize
   ) -> CGSize {
     CGSize(
-      width: parentSize.width * (direction == .center ? 1.0 : 0.8),
+      width: parentSize.width * 0.8,
       height: parentSize.height
     )
   }
@@ -124,6 +114,6 @@ private extension SlideInPresentationController {
   
   
   @objc func handleTap(recognizer: UITapGestureRecognizer) {
-    presentingViewController.dismiss(animated: direction != .center)
+    presentingViewController.dismiss(animated: true)
   }
 }

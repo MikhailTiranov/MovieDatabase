@@ -11,13 +11,17 @@ struct Movie: Codable {
   
   // MARK: - Public (Properties)
   let title: String
-  let releaseDate: Date
+  let releaseDate: String?
   let voteAverage: Double
-  let runtime: Int
-  let genres: [Genre]
+  let runtime: Int?
+  let genres: [Genre]?
   let overview: String
-  let backdropPath: String
-  let posterPath: String
+  let backdropPath: String?
+  let posterPath: String?
+  
+  var date: Date? {
+    DateFormatter.fullDateFormatter.date(from: releaseDate ?? "")
+  }
 }
 
 extension Movie: MovieCellRepresentable {
@@ -36,6 +40,7 @@ extension Movie: MovieCellRepresentable {
   }
   
   var duration: String {
+    guard let runtime else { return "" }
     let hours = String(runtime / 60)
     let minutes = String(runtime % 60)
     let correctTime = "\(hours)h\(minutes)min"
@@ -43,12 +48,53 @@ extension Movie: MovieCellRepresentable {
   }
   
   var genreAndYear: String {
-    DateFormatter.yearDateFormatter.string(from: releaseDate)
-    + " · " +
-    genres
-    .prefix(2)
-    .map { $0.name }
-    .joined(separator: ", ")
+    guard let date else { return "" }
+    let year = DateFormatter.yearDateFormatter.string(from: date)
+    guard let genres else { return year }
+    
+    return genres
+      .prefix(2)
+      .map { $0.name }
+      .joined(separator: ", ")
+    + " · "
+    + year
+  }
+}
+
+extension Movie: MovieDetailRepresentable {
+  var minutesDuration: String {
+    if let runtime {
+      return String(runtime) + "m"
+    } else {
+      return ""
+    }
+  }
+
+  var starsReview: String {
+    var textString = ""
+    var halfRate = voteAverage / 2
+    
+    for _ in 1...5 {
+      textString.append(halfRate >= 0.5 ? "★ " : "☆ ")
+      halfRate -= 1
+    }
+    
+    return textString
+  }
+
+  var allGenres: String {
+    if let genres {
+      return genres
+        .map { $0.name }
+        .joined(separator: ", ")
+    } else {
+      return "-"
+    }
+  }
+    
+  var fullReleaseDate: String {
+    guard let date else { return "-" }
+    return DateFormatter.describingDateFormatter.string(from: date)
   }
 }
 

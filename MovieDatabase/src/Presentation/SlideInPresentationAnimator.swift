@@ -44,8 +44,6 @@ extension SlideInPresentationAnimator: UIViewControllerAnimatedTransitioning {
       dismissedFrame.origin.x = -presentedFrame.width
     case .right:
       dismissedFrame.origin.x = transitionContext.containerView.frame.size.width
-    case .center:
-      dismissedFrame = transitionContext.containerView.frame
     }
     
     let initialFrame = isPresentation ? dismissedFrame : presentedFrame
@@ -80,16 +78,10 @@ extension SlideInPresentationAnimator: UIViewControllerAnimatedTransitioning {
     if isPresentation {
       transitionContext.containerView.addSubview(controller.view)
       
-      switch direction {
-      case .center:
-        controller.view.frame = finalFrame
-        transitionContext.completeTransition(true)
-      case .left, .right:
-        makeAnimationTransition(
-          for: UITransitionContextViewControllerKey.from,
-          index: direction.rawValue
-        )
-      }
+      makeAnimationTransition(
+        for: UITransitionContextViewControllerKey.from,
+        index: direction.rawValue
+      )
     } else {
       makeAnimationTransition(
         for: UITransitionContextViewControllerKey.to,

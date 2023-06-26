@@ -5,4 +5,6 @@
 //  Created by Mihail Tiranov on 24.06.2023.
 //
 
-protocol MoviesViewInterface: AnyObject { }
+protocol MoviesViewInterface: AnyObject {
+  var presenter: MoviesPresenterInterface! { get set }
+}

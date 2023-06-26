@@ -9,17 +9,13 @@ import Foundation
 
 class MoviesPresenter {
   
-  // MARK: - MoviesPresenterInterface
+  // MARK: - Public (Properties)
   var movieIds: [String] = Movie.mockMovies
+  
+  // MARK: - MoviesPresenterInterface
   var movies: [Movie] = []
 
-  // MARK: - Public (Properties)
-  weak var moviesViewController: MoviesViewInterface?
-  
-  // MARK: - Init
-  init(with viewController: MoviesViewController) {
-    moviesViewController = viewController
-  }
+  weak var viewInterface: MoviesViewInterface!
 }
 
 extension MoviesPresenter: MoviesPresenterInterface {
