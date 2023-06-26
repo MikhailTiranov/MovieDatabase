@@ -82,13 +82,13 @@ extension Movie: MovieDetailRepresentable {
     return textString
   }
 
-  var allGenres: String {
+  var allGenres: String? {
     if let genres {
       return genres
         .map { $0.name }
         .joined(separator: ", ")
     } else {
-      return "-"
+      return nil
     }
   }
     

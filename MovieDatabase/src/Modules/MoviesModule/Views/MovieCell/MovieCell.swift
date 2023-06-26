@@ -32,9 +32,6 @@ class MovieCell: UICollectionViewCell {
     return view
   }()
   
-  // TODO: Make cache outside
-  private static let imageCache = NSCache<AnyObject, AnyObject>()
-  
   // MARK: - UICollectionViewCell
   override func prepareForReuse() {
     imageView.image = nil
@@ -77,19 +74,10 @@ class MovieCell: UICollectionViewCell {
     imageView.image = nil
     activityIndicator.startAnimating()
 
-    // TODO: start to load only after appearing on screen
-    if
-      let imageFromCache = Self.imageCache.object(forKey: path as AnyObject) as? UIImage
-    {
-      imageView.image = imageFromCache
-      activityIndicator.stopAnimating()
-    } else {
-      TMDBService.shared.fetchImage(path: path) { image in
-        self.setupImage(image)
-        Self.imageCache.setObject(image, forKey: path as AnyObject)
-      } errorHandler: { error in
-        self.setupImage(nil)
-      }
+    TMDBService.shared.fetchImage(path: path) { image in
+      self.setupImage(image)
+    } errorHandler: { error in
+      self.setupImage(nil)
     }
   }
   
@@ -137,5 +125,5 @@ class MovieCell: UICollectionViewCell {
 
 extension MovieCell {
   private static let infoViewHeight = 95.0
-  private static let reuseIdentifier = "MovieCell"
+  static let reuseIdentifier = "MovieCell"
 }

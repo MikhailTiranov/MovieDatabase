@@ -17,6 +17,24 @@ final class DetailViewController: UIViewController {
   }
   
   // MARK: - Private (Properties)
+  private lazy var pointViewGenreConstraint: NSLayoutConstraint = {
+    let constraint = pointView.topAnchor.constraint(
+      equalTo: genreView.bottomAnchor,
+      constant: 10.0
+    )
+    constraint.priority = .defaultHigh
+    return constraint
+  }()
+  
+  private lazy var pointViewReleaseDateConstraint: NSLayoutConstraint = {
+    let constraint = pointView.topAnchor.constraint(
+      equalTo: releaseDateView.bottomAnchor,
+      constant: 10.0
+    )
+    constraint.priority = .defaultLow
+    return constraint
+  }()
+  
   private lazy var timeLabel: UILabel = {
     let view = UILabel()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -87,6 +105,24 @@ final class DetailViewController: UIViewController {
     return view
   }()
   
+  private lazy var collectionButton: UIButton = {
+    let view = UIButton()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.tintColor = .textHighligted
+    view.layer.cornerRadius = Self.buttonHeight / 2
+    view.backgroundColor = .backgroundAccent
+    view.setImage(presenter.isAlreadyInCollection ? .bin : .plus, for: .normal)
+    view.imageView?.contentMode = .scaleAspectFit
+    view.contentVerticalAlignment = .fill
+    view.contentHorizontalAlignment = .fill
+    view.addTarget(
+      self,
+      action: #selector(collectionButtonWasTapped),
+      for: .touchUpInside
+    )
+    return view
+  }()
+  
   // MARK: - Init
   init() {
     super.init(nibName: nil, bundle: nil)
@@ -107,9 +143,14 @@ final class DetailViewController: UIViewController {
     presenter.handleOnViewLoad()
   }
   
+  // MARK: - Private (Interface)
   private func setupView() {
     setupSubviews()
     setupLayout()
+  }
+  
+  @objc private func collectionButtonWasTapped() {
+    presenter.handleCollectionButtonTapped()
   }
   
   private func setupSubviews() {
@@ -124,6 +165,8 @@ final class DetailViewController: UIViewController {
     view.addSubview(releaseDateView)
     view.addSubview(pointView)
     view.addSubview(plotLabel)
+    
+    view.addSubview(collectionButton)
   }
   
   private func setupLayout() {
@@ -152,17 +195,18 @@ final class DetailViewController: UIViewController {
         activityIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
         activityIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
         
-        genreView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25.0),
-        genreView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        genreView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        genreView.heightAnchor.constraint(equalToConstant: 20.0),
-        
-        releaseDateView.topAnchor.constraint(equalTo: genreView.bottomAnchor, constant: 15.0),
+        releaseDateView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25.0),
         releaseDateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
         releaseDateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         releaseDateView.heightAnchor.constraint(equalToConstant: 20.0),
+        
+        genreView.topAnchor.constraint(equalTo: releaseDateView.bottomAnchor, constant: 15.0),
+        genreView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        genreView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        genreView.heightAnchor.constraint(equalToConstant: 20.0),
 
-        pointView.topAnchor.constraint(equalTo: releaseDateView.bottomAnchor, constant: 10.0),
+        pointViewGenreConstraint,
+        pointViewReleaseDateConstraint,
         pointView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
         pointView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         pointView.heightAnchor.constraint(equalToConstant: 5.0),
@@ -170,7 +214,15 @@ final class DetailViewController: UIViewController {
         plotLabel.topAnchor.constraint(equalTo: pointView.bottomAnchor, constant: 5.0),
         plotLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15.0),
         plotLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15.0),
-        plotLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        plotLabel.bottomAnchor.constraint(equalTo: collectionButton.topAnchor, constant: -10.0),
+        
+        collectionButton.heightAnchor.constraint(equalToConstant: Self.buttonHeight),
+        collectionButton.widthAnchor.constraint(equalToConstant: Self.buttonHeight),
+        collectionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.0),
+        collectionButton.bottomAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+          constant: -20.0
+        ),
       ]
     )
   }
@@ -185,6 +237,10 @@ extension DetailViewController: DetailViewInterface {
     }
   }
   
+  func dismiss() {
+    dismiss(animated: true)
+  }
+  
   func updateMovie(_ movie: MovieDetailRepresentable?) {
     guard let movie else { return }
     
@@ -196,11 +252,22 @@ extension DetailViewController: DetailViewInterface {
     
     imageView.image = nil
     activityIndicator.startAnimating()
-        
-    genreView.subtitle = movie.allGenres ?? "-"
     
-    releaseDateView.subtitle = movie.fullReleaseDate ?? "-"
+    releaseDateView.subtitle = movie.fullReleaseDate
+    
+    if let genres = movie.allGenres, !genres.isEmpty {
+      genreView.subtitle = genres
+      pointViewReleaseDateConstraint.priority = .defaultLow
+      genreView.isHidden = false
+    } else {
+      pointViewReleaseDateConstraint.priority = .required
+      genreView.isHidden = true
+    }
     
     plotLabel.text = movie.overview
   }
+}
+
+extension DetailViewController {
+  private static let buttonHeight = 60.0
 }

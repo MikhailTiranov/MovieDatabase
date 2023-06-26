@@ -12,4 +12,5 @@ protocol DetailViewInterface: AnyObject {
   
   func updateImage(_ image: UIImage?)
   func updateMovie(_ movie: MovieDetailRepresentable?)
+  func dismiss()
 }

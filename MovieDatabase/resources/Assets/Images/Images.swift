@@ -36,4 +36,12 @@ extension UIImage {
   static var xmark: UIImage {
     UIImage(systemName: "xmark")!
   }
+  
+  static var bin: UIImage {
+    UIImage(systemName: "xmark.bin.circle")!
+  }
+  
+  static var plus: UIImage {
+    UIImage(systemName: "plus.circle.fill")!
+  }
 }

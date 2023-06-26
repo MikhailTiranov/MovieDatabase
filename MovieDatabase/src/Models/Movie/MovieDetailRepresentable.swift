@@ -12,7 +12,7 @@ protocol MovieDetailRepresentable {
   var starsReview: String { get }
   var backdropPath: String? { get }
   var title: String { get }
-  var allGenres: String { get }
+  var allGenres: String? { get }
   var fullReleaseDate: String { get }
   var overview: String { get }
 }

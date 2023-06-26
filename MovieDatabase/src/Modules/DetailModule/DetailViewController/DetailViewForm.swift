@@ -63,24 +63,8 @@ class DetailViewForm: UIView {
     )
     path.addLine(to: CGPoint(x: width, y: -18.0))
     
-    path.addLine(to: CGPoint(x: width, y: height - 5.0))
-    path.addArc(
-      withCenter: CGPoint(x: width - 5.0, y: height - 5.0),
-      radius: 5.0,
-      startAngle: .zero.radians,
-      endAngle: CGFloat(90.0).radians,
-      clockwise: true
-    )
-    path.addLine(to: CGPoint(x: width - 5.0, y: height))
-    path.addLine(to: CGPoint(x: 5.0, y: height))
-    path.addArc(
-      withCenter: CGPoint(x: 5.0, y: height - 5.0),
-      radius: 5.0,
-      startAngle: CGFloat(270.0).radians,
-      endAngle: CGFloat(180.0).radians,
-      clockwise: true
-    )
-    path.addLine(to: CGPoint(x: .zero, y: height - 5.0))
+    path.addLine(to: CGPoint(x: width, y: height))
+    path.addLine(to: CGPoint(x: .zero, y: height))
     path.close()
     
     let shapeLayer = CAShapeLayer()

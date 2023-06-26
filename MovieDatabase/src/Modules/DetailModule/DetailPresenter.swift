@@ -9,6 +9,11 @@ import Foundation
 
 class DetailPresenter {
   
+  // MARK: - Public (Properties)
+  var isAlreadyInCollection: Bool {
+    true
+  }
+  
   // MARK: - Private (Properties)
   private var movie: MovieDetailRepresentable?
   
@@ -46,7 +51,11 @@ extension DetailPresenter: DetailPresenterInterface {
           self.viewInterface.updateImage(nil)
         }
     } else {
-      self.viewInterface.updateImage(nil)
+      viewInterface.updateImage(nil)
     }
+  }
+  
+  func handleCollectionButtonTapped() {
+    viewInterface.dismiss()
   }
 }
